@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Подарки от наших партнёров</title>
+  <meta name="description" content="Партнёрская сеть бизнесов в Люберцах. Получайте эксклюзивные подарки и скидки от наших партнёров." />
+  <meta property="og:title" content="Подарки от наших партнёров" />
+  <meta property="og:description" content="Партнёрская сеть бизнесов в Люберцах. Один визит — подарки сразу в нескольких местах." />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="ru_RU" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎁</text></svg>" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline'; img-src 'self' data:; script-src 'self' 'unsafe-inline'" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      opacity: 0;
+      transition: opacity .15s;
+      background: #0a0a0f;
+      background-image:
+        radial-gradient(ellipse at 20% 20%, rgba(99,40,200,0.18) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(20,120,220,0.15) 0%, transparent 50%);
+      color: #e8e8f0;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ── HERO ── */
+    .hero {
+      text-align: center;
+      padding: 80px 20px 50px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 6vw, 3.4rem);
+      font-weight: 800;
+      line-height: 1.15;
+      background: linear-gradient(120deg, #c07aff 0%, #5eaaff 50%, #ff6fa8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 22px;
+    }
+
+    .hero-desc {
+      font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+      line-height: 1.8;
+      color: #8080a8;
+      max-width: 580px;
+      margin: 0 auto 50px;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .how-section {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 20px 70px;
+      text-align: center;
+    }
+
+    .section-title {
+      font-size: clamp(1.3rem, 4vw, 1.9rem);
+      font-weight: 700;
+      color: #d0d0f0;
+      margin-bottom: 12px;
+    }
+
+    .section-sub {
+      font-size: 0.95rem;
+      color: #6060a0;
+      margin-bottom: 44px;
+    }
+
+    .steps {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .step {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 26px 20px;
+      flex: 1 1 170px;
+      max-width: 210px;
+      position: relative;
+    }
+
+    /* Green checkmark for done steps */
+    .step.done::after {
+      content: '✓';
+      position: absolute;
+      top: 10px; right: 12px;
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: #22c55e;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 22px;
+      text-align: center;
+    }
+
+    .step-num {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #7b3fff, #2b7fff);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 14px;
+      margin: 0 auto 12px;
+    }
+
+    .step p { font-size: 0.85rem; color: #7070a0; line-height: 1.6; }
+
+    .done-label {
+      margin-top: 12px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #22c55e;
+      background: rgba(34,197,94,0.1);
+      border: 1px solid rgba(34,197,94,0.25);
+      border-radius: 8px;
+      padding: 4px 10px;
+      display: inline-block;
+    }
+
+    /* ── PARTNER CARDS ── */
+    .partners-section {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 20px 80px;
+      text-align: center;
+    }
+
+    .partner-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 48px;
+    }
+
+    .partner-card {
+      background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 22px;
+      padding: 36px 28px;
+      cursor: pointer;
+      transition: transform .3s, border-color .3s, box-shadow .3s;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
+    }
+    .partner-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(130,60,255,0.08), transparent 60%);
+      opacity: 0;
+      transition: opacity .3s;
+    }
+    .partner-card:hover { transform: translateY(-6px); border-color: rgba(130,60,255,0.45); box-shadow: 0 20px 60px rgba(130,60,255,0.15); }
+    .partner-card:hover::before { opacity: 1; }
+
+    .partner-emoji { font-size: 2.6rem; margin-bottom: 18px; display: block; }
+
+    .partner-card h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #dde0ff;
+      margin-bottom: 8px;
+    }
+
+    .partner-type {
+      font-size: 0.8rem;
+      color: #6060a0;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 16px;
+    }
+
+    .partner-card p {
+      font-size: 0.88rem;
+      color: #7070a0;
+      line-height: 1.65;
+      margin-bottom: 24px;
+    }
+
+    .gift-preview {
+      background: linear-gradient(135deg, rgba(130,60,255,0.15), rgba(30,140,255,0.1));
+      border: 1px solid rgba(130,60,255,0.3);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 0.88rem;
+      color: #c0a0ff;
+      font-weight: 600;
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+
+    .card-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #7b3fff, #2b7fff);
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 12px 24px;
+      border-radius: 100px;
+      border: none;
+      cursor: pointer;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .card-btn:hover { transform: scale(1.04); box-shadow: 0 8px 30px rgba(123,63,255,0.5); }
+
+    /* ── DETAIL PAGE ── */
+    .detail-page {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 50px 20px 100px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #9090c0;
+      font-size: 0.88rem;
+      padding: 10px 20px;
+      border-radius: 100px;
+      cursor: pointer;
+      margin-bottom: 40px;
+      transition: background .2s, color .2s;
+    }
+    .back-btn:hover { background: rgba(255,255,255,0.1); color: #d0d0f0; }
+
+    .detail-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .detail-emoji { font-size: 3rem; }
+
+    .detail-header h2 {
+      font-size: clamp(1.6rem, 5vw, 2.2rem);
+      font-weight: 800;
+      background: linear-gradient(120deg, #c07aff, #5eaaff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .detail-type {
+      font-size: 0.8rem;
+      color: #5050a0;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 30px;
+    }
+
+    .maps-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #6699ff;
+      font-size: 0.85rem;
+      text-decoration: none;
+      margin-bottom: 40px;
+      opacity: 0.85;
+      transition: opacity .2s;
+    }
+    .maps-link:hover { opacity: 1; text-decoration: underline; }
+
+    /* GIFT BLOCK */
+    .gift-block {
+      background: linear-gradient(135deg, rgba(123,63,255,0.12), rgba(43,127,255,0.08));
+      border: 1px solid rgba(123,63,255,0.35);
+      border-radius: 20px;
+      padding: 32px 28px;
+      margin-bottom: 50px;
+      position: relative;
+      overflow: hidden;
+    }
+    .gift-block::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 160px; height: 160px;
+      border-radius: 50%;
+      background: rgba(123,63,255,0.08);
+    }
+
+    .gift-label {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #9060ff;
+      margin-bottom: 14px;
+    }
+
+    .gift-block h3 {
+      font-size: clamp(1.3rem, 4vw, 1.8rem);
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 16px;
+      line-height: 1.3;
+    }
+
+    .gift-block p {
+      font-size: 0.93rem;
+      color: #8888b8;
+      line-height: 1.75;
+      margin-bottom: 24px;
+    }
+
+    /* PROMO */
+    .promo-box {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(255,255,255,0.06);
+      border: 1px dashed rgba(255,255,255,0.2);
+      border-radius: 14px;
+      padding: 16px 20px;
+      flex-wrap: wrap;
+    }
+
+    .promo-label {
+      font-size: 0.82rem;
+      color: #8080a8;
+    }
+
+    .promo-value {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #c07aff;
+      letter-spacing: 0.08em;
+      background: rgba(192,122,255,0.1);
+      border: 1px solid rgba(192,122,255,0.25);
+      border-radius: 8px;
+      padding: 6px 16px;
+    }
+
+    .promo-copy {
+      margin-left: auto;
+      background: rgba(123,63,255,0.2);
+      border: 1px solid rgba(123,63,255,0.4);
+      color: #c07aff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .promo-copy:hover { background: rgba(123,63,255,0.35); }
+    .promo-copy.copied { color: #22c55e; border-color: #22c55e; background: rgba(34,197,94,0.1); }
+
+    .promo-hint {
+      margin-top: 12px;
+      font-size: 0.8rem;
+      color: #6060a0;
+      line-height: 1.5;
+    }
+
+    /* SOURCE TAG */
+    .source-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 28px;
+      background: rgba(34,197,94,0.1);
+      border: 1px solid rgba(34,197,94,0.3);
+      border-radius: 100px;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      color: #4ade80;
+    }
+
+    /* REVIEWS */
+    .reviews-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #c0c0e0;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .reviews-title span {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: #5050a0;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 100px;
+      padding: 3px 12px;
+    }
+
+    .reviews-grid { display: grid; gap: 16px; }
+
+    .review-img {
+      width: 100%;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.08);
+      display: block;
+    }
+
+    /* DIVIDER */
+    .divider {
+      max-width: 860px;
+      margin: 0 auto 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(130,60,255,0.3), transparent);
+    }
+
+    /* CTA */
+    .cta-section {
+      text-align: center;
+      padding: 60px 20px 100px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .cta-section h2 {
+      font-size: clamp(1.4rem, 5vw, 2.2rem);
+      font-weight: 800;
+      background: linear-gradient(120deg, #c07aff, #5eaaff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 14px;
+    }
+
+    .cta-section p { font-size: 0.95rem; color: #6060a0; margin-bottom: 36px; line-height: 1.7; }
+
+    .cta-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #7b3fff, #2b7fff);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 18px 44px;
+      border-radius: 100px;
+      text-decoration: none;
+      animation: pulse 2.4s ease-in-out infinite;
+      transition: transform .2s;
+    }
+    .cta-btn:hover { transform: scale(1.05); }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 30px rgba(123,63,255,0.45); }
+      50%       { box-shadow: 0 0 60px rgba(123,63,255,0.75), 0 0 20px rgba(43,127,255,0.4); }
+    }
+
+    /* ── ADMIN PANEL ── */
+    .admin-page {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 60px 20px 100px;
+    }
+
+    .admin-page h2 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #d0d0f0;
+      margin-bottom: 8px;
+    }
+
+    .admin-page .admin-sub {
+      font-size: 0.85rem;
+      color: #505080;
+      margin-bottom: 40px;
+    }
+
+    .stat-cards { display: grid; gap: 16px; }
+
+    .stat-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 24px 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .stat-emoji { font-size: 2rem; }
+
+    .stat-info { flex: 1; }
+    .stat-info h4 { font-size: 1rem; font-weight: 700; color: #c0c0e0; margin-bottom: 4px; }
+    .stat-info p { font-size: 0.82rem; color: #606080; }
+
+    .stat-nums { text-align: right; }
+    .stat-num { font-size: 2rem; font-weight: 800; color: #c07aff; line-height: 1; }
+    .stat-num-label { font-size: 0.72rem; color: #505080; margin-top: 2px; }
+
+    .admin-reset {
+      margin-top: 30px;
+      background: rgba(255,60,60,0.1);
+      border: 1px solid rgba(255,60,60,0.25);
+      color: #ff8080;
+      font-size: 0.82rem;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background .2s;
+    }
+    .admin-reset:hover { background: rgba(255,60,60,0.2); }
+
+    .admin-note {
+      margin-top: 20px;
+      font-size: 0.78rem;
+      color: #404060;
+      line-height: 1.6;
+    }
+
+    /* ── CROSS TABLE ── */
+    .cross-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+    }
+    .cross-table th, .cross-table td {
+      padding: 10px 8px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .cross-table th {
+      background: rgba(255,255,255,0.04);
+      color: #9090c0;
+      font-weight: 700;
+      font-size: 0.75rem;
+    }
+    .cross-table td {
+      color: #c0c0e0;
+    }
+    .cross-table .row-header {
+      text-align: left;
+      color: #9090c0;
+      font-weight: 600;
+    }
+    .cross-table .cell-self {
+      background: rgba(255,255,255,0.02);
+      color: #303050;
+    }
+    .cross-table .cell-active {
+      color: #c07aff;
+      font-weight: 700;
+    }
+
+    /* ── COOKIE BANNER ── */
+    .cookie-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15,15,25,0.97);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      z-index: 1000;
+      font-size: 0.82rem;
+      color: #8080a8;
+    }
+    .cookie-banner p { flex: 1; min-width: 200px; line-height: 1.5; }
+    .cookie-accept {
+      background: linear-gradient(135deg, #7b3fff, #2b7fff);
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 10px 20px;
+      border-radius: 100px;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    @media (max-width: 600px) {
+      .hero { padding: 50px 16px 36px; }
+      .gift-block { padding: 24px 20px; }
+      .detail-page { padding: 36px 16px 80px; }
+      .promo-copy { margin-left: 0; }
+      .cross-table { font-size: 0.68rem; }
+      .cross-table th, .cross-table td { padding: 6px 4px; }
+      .cross-table .row-header { white-space: nowrap; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════ ERROR PAGE (нет ?ref=) ══════════════ -->
+  <div id="page-error" class="page">
+    <section class="hero" style="padding-top:120px">
+      <h1>Доступ по QR-коду</h1>
+      <p class="hero-desc">
+        Эта страница доступна только по QR-коду от наших партнёров.
+        Отсканируйте QR-код в одном из заведений партнёрской сети, чтобы получить эксклюзивные подарки.
+      </p>
+      <div style="font-size:4rem;margin:40px 0">🔒</div>
+      <p style="color:#505080;font-size:0.85rem">Если вы считаете, что это ошибка — обратитесь к администратору партнёрской программы.</p>
+    </section>
+  </div>
+
+  <!-- ══════════════ MAIN PAGE ══════════════ -->
+  <div id="page-main" class="page">
+
+    <section class="hero">
+      <h1>Подарки от&nbsp;наших партнёров</h1>
+      <p class="hero-desc">
+        Мы — несколько бизнесов одного района, которые объединились чтобы дарить
+        своим клиентам эксклюзивные привилегии друг у друга. Один визит открывает
+        подарки сразу в нескольких местах.
+      </p>
+    </section>
+
+    <section class="how-section">
+      <h2 class="section-title">Как это работает</h2>
+      <p class="section-sub">Четыре простых шага</p>
+      <div class="steps">
+        <div class="step done">
+          <div class="step-num">1</div>
+          <p>Получаете ссылку от партнёра — по QR-коду на месте или из рассылки</p>
+          <div class="done-label">✅ Уже сделано</div>
+        </div>
+        <div class="step done">
+          <div class="step-num">2</div>
+          <p>Переходите по ссылке и попадаете на эту страницу</p>
+          <div class="done-label">✅ Уже сделано</div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <p>Выбираете партнёра и получаете промокод на подарок</p>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <p>Называете промокод при записи или визите — и забираете бонус</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="partners-section">
+      <h2 class="section-title">Выберите партнёра</h2>
+      <p class="section-sub">Нажмите на карточку чтобы увидеть ваш эксклюзивный подарок</p>
+
+      <div class="partner-cards">
+
+        <div class="partner-card" onclick="openPartner('smakidze')">
+          <span class="partner-emoji">🍽️</span>
+          <div class="partner-type">Ресторан грузинской кухни</div>
+          <h3>Смакидзе</h3>
+          <p>Грузинская кухня в Люберцах — хачапури, хинкали, домашняя атмосфера.</p>
+          <div class="gift-preview">🎁 300 ₽ на счёт + удвоение бонусов</div>
+          <button class="card-btn">Смотреть подарок →</button>
+        </div>
+
+        <div class="partner-card" onclick="openPartner('km')">
+          <span class="partner-emoji">💆</span>
+          <div class="partner-type">Студия массажа</div>
+          <h3>KM Studio</h3>
+          <p>Профессиональный массаж в Люберцах — опытные мастера, уютная студия.</p>
+          <div class="gift-preview">🎁 3 000 ₽ на баланс для новых клиентов</div>
+          <button class="card-btn">Смотреть подарок →</button>
+        </div>
+
+        <div class="partner-card" onclick="openPartner('kiber')">
+          <span class="partner-emoji">👨‍💻</span>
+          <div class="partner-type">Школа программирования для детей</div>
+          <h3>KiberONE</h3>
+          <p>Программирование для детей — пробный урок бесплатно, система мотивации.</p>
+          <div class="gift-preview">🎁 Бесплатный пробный урок + 50% на первый месяц</div>
+          <button class="card-btn">Смотреть подарок →</button>
+        </div>
+
+        <div class="partner-card" onclick="openPartner('abrikos')">
+          <span class="partner-emoji">🍑</span>
+          <div class="partner-type">Кафе</div>
+          <h3>Абрикос</h3>
+          <p>Кафе в Люберцах — разнообразное меню, быстрое обслуживание, доступные цены.</p>
+          <div class="gift-preview">🎁 500 ₽ на счёт + 10% бонусов с каждого чека</div>
+          <button class="card-btn">Смотреть подарок →</button>
+        </div>
+
+        <div class="partner-card" onclick="openPartner('fsdental')">
+          <span class="partner-emoji">🦷</span>
+          <div class="partner-type">Стоматологическая клиника</div>
+          <h3>Fs Dental Clinic</h3>
+          <p>Стоматология в Люберцах — два филиала, цены под ключ, все виды лечения.</p>
+          <div class="gift-preview">🎁 15% скидка на первое посещение</div>
+          <button class="card-btn">Смотреть подарок →</button>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <section class="cta-section">
+      <h2>Хотите стать партнёром?</h2>
+      <p>Присоединяйтесь к нашей сети — расскажем об условиях и подключим ваш бизнес.</p>
+      <a href="https://t.me/nikolaevofficial" target="_blank" rel="noopener" class="cta-btn">Стать партнёром →</a>
+    </section>
+
+  </div><!-- /page-main -->
+
+
+  <!-- ══════════════ СМАКИДЗЕ ══════════════ -->
+  <div id="page-smakidze" class="page">
+    <div class="detail-page">
+      <button class="back-btn" onclick="showPage('main')">← Назад ко всем партнёрам</button>
+
+      <div id="source-tag-smakidze"></div>
+
+      <div class="detail-header">
+        <span class="detail-emoji">🍽️</span>
+        <h2>Смакидзе</h2>
+      </div>
+      <div class="detail-type">Ресторан грузинской кухни</div>
+      <a class="maps-link" href="https://yandex.ru/maps/org/smakidze/6842671599/" target="_blank" rel="noopener">
+        📍 Люберцы, ул. Юности, 5 — открыть на Яндекс Картах
+      </a>
+
+      <div class="gift-block">
+        <div class="gift-label">Ваш эксклюзивный подарок</div>
+        <h3>300 ₽ на счёт + удвоение бонусов</h3>
+        <p>
+          Назовите промокод при регистрации в приложении ресторана —
+          получите <strong style="color:#fff">300 ₽ на бонусный счёт</strong> сразу.
+          Все начисляемые бонусы <strong style="color:#fff">удваиваются</strong> —
+          каждый визит приносит вдвое больше баллов.
+        </p>
+        <div class="promo-box">
+          <span class="promo-label">Ваш промокод:</span>
+          <span class="promo-value" id="promo-smakidze"></span>
+          <button class="promo-copy" onclick="copyPromo('promo-smakidze', this)">Скопировать</button>
+        </div>
+        <p class="promo-hint">📞 Скопируйте или запомните промокод — его нужно назвать менеджеру при звонке или записи</p>
+      </div>
+
+      <div class="reviews-title">
+        Отзывы с Яндекс Карт <span>реальные отзывы</span>
+      </div>
+      <div class="reviews-grid">
+        <img class="review-img" src="reviews/smak_1.png" alt="Отзыв о Смакидзе" />
+        <img class="review-img" src="reviews/smak_2.png" alt="Отзыв о Смакидзе" />
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ KM STUDIO ══════════════ -->
+  <div id="page-km" class="page">
+    <div class="detail-page">
+      <button class="back-btn" onclick="showPage('main')">← Назад ко всем партнёрам</button>
+
+      <div id="source-tag-km"></div>
+
+      <div class="detail-header">
+        <span class="detail-emoji">💆</span>
+        <h2>KM Studio</h2>
+      </div>
+      <div class="detail-type">Студия массажа</div>
+      <a class="maps-link" href="https://yandex.ru/maps/org/km_studio/193407570244/" target="_blank" rel="noopener">
+        📍 Люберцы, ул. Юности, 2 — открыть на Яндекс Картах
+      </a>
+
+      <div class="gift-block">
+        <div class="gift-label">Ваш эксклюзивный подарок</div>
+        <h3>3 000 ₽ на баланс для новых клиентов</h3>
+        <p>
+          Назовите промокод при первой записи — получите
+          <strong style="color:#fff">3 000 ₽ на бонусный счёт</strong>.
+          Бонусами можно оплачивать до <strong style="color:#fff">20% стоимости</strong> каждого сеанса.
+        </p>
+        <div class="promo-box">
+          <span class="promo-label">Ваш промокод:</span>
+          <span class="promo-value" id="promo-km"></span>
+          <button class="promo-copy" onclick="copyPromo('promo-km', this)">Скопировать</button>
+        </div>
+        <p class="promo-hint">📞 Скопируйте или запомните промокод — его нужно назвать менеджеру при звонке или записи</p>
+      </div>
+
+      <div class="reviews-title">
+        Отзывы с Яндекс Карт <span>реальные отзывы</span>
+      </div>
+      <div class="reviews-grid">
+        <img class="review-img" src="reviews/km_1.png" alt="Отзыв о KM Studio" />
+        <img class="review-img" src="reviews/km_2.png" alt="Отзыв о KM Studio" />
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ KIBERONE ══════════════ -->
+  <div id="page-kiber" class="page">
+    <div class="detail-page">
+      <button class="back-btn" onclick="showPage('main')">← Назад ко всем партнёрам</button>
+
+      <div id="source-tag-kiber"></div>
+
+      <div class="detail-header">
+        <span class="detail-emoji">👨‍💻</span>
+        <h2>KiberONE</h2>
+      </div>
+      <div class="detail-type">Школа программирования для детей</div>
+      <a class="maps-link" href="https://yandex.ru/navi/org/kiberone/22710654875?si=93e6xf3nw24te0zedn7txzmt6g" target="_blank" rel="noopener">
+        📍 Люберцы, ул. Весенняя, 6 — открыть на Яндекс Картах
+      </a>
+
+      <div class="gift-block">
+        <div class="gift-label">Ваш эксклюзивный подарок</div>
+        <h3>Бесплатный пробный урок + 50% на первый месяц</h3>
+        <p>
+          Назовите промокод при записи — ребёнок получает
+          <strong style="color:#fff">бесплатный пробный урок</strong>.
+          Если понравится — <strong style="color:#fff">скидка 50% на первый месяц</strong> обучения.
+        </p>
+        <div class="promo-box">
+          <span class="promo-label">Ваш промокод:</span>
+          <span class="promo-value" id="promo-kiber"></span>
+          <button class="promo-copy" onclick="copyPromo('promo-kiber', this)">Скопировать</button>
+        </div>
+        <p class="promo-hint">📞 Скопируйте или запомните промокод — его нужно назвать менеджеру при звонке или записи</p>
+      </div>
+
+      <div class="reviews-title">
+        Отзывы с Яндекс Карт <span>реальные отзывы</span>
+      </div>
+      <div class="reviews-grid">
+        <img class="review-img" src="reviews/kiber_1.png" alt="Отзыв о KiberONE" />
+        <img class="review-img" src="reviews/kiber_2.png" alt="Отзыв о KiberONE" />
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ АБРИКОС ══════════════ -->
+  <div id="page-abrikos" class="page">
+    <div class="detail-page">
+      <button class="back-btn" onclick="showPage('main')">← Назад ко всем партнёрам</button>
+
+      <div id="source-tag-abrikos"></div>
+
+      <div class="detail-header">
+        <span class="detail-emoji">🍑</span>
+        <h2>Абрикос</h2>
+      </div>
+      <div class="detail-type">Кафе</div>
+      <a class="maps-link" href="https://yandex.com/maps/org/abrikos/149781591994/" target="_blank" rel="noopener">
+        📍 Люберцы, Весенняя ул., 4, корп. 2 — открыть на Яндекс Картах
+      </a>
+
+      <div class="gift-block">
+        <div class="gift-label">Ваш эксклюзивный подарок</div>
+        <h3>500 ₽ на счёт + 10% бонусов с каждого чека</h3>
+        <p>
+          Назовите промокод при регистрации в приложении кафе —
+          получите <strong style="color:#fff">500 ₽ на бонусный счёт</strong> сразу.
+          С каждого чека начисляется <strong style="color:#fff">10% бонусами</strong>.
+          Списание — до 20% накопленных бонусов, но не более 50% от чека.
+        </p>
+        <div class="promo-box">
+          <span class="promo-label">Ваш промокод:</span>
+          <span class="promo-value" id="promo-abrikos"></span>
+          <button class="promo-copy" onclick="copyPromo('promo-abrikos', this)">Скопировать</button>
+        </div>
+        <p class="promo-hint">📞 Скопируйте или запомните промокод — его нужно назвать менеджеру при звонке или записи</p>
+      </div>
+
+      <div class="reviews-title">
+        Отзывы с Яндекс Карт <span>реальные отзывы</span>
+      </div>
+      <div class="reviews-grid">
+        <img class="review-img" src="reviews/abrikos_1.png" alt="Отзыв об Абрикосе" />
+        <img class="review-img" src="reviews/abrikos_2.png" alt="Отзыв об Абрикосе" />
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ FS DENTAL CLINIC ══════════════ -->
+  <div id="page-fsdental" class="page">
+    <div class="detail-page">
+      <button class="back-btn" onclick="showPage('main')">← Назад ко всем партнёрам</button>
+
+      <div id="source-tag-fsdental"></div>
+
+      <div class="detail-header">
+        <span class="detail-emoji">🦷</span>
+        <h2>Fs Dental Clinic</h2>
+      </div>
+      <div class="detail-type">Стоматологическая клиника · 2 филиала</div>
+      <a class="maps-link" href="https://yandex.com/maps/org/fs_dental_clinic/14476327645/" target="_blank" rel="noopener">
+        📍 Филиал 1: ул. Юности, 6, Люберцы — открыть на Яндекс Картах
+      </a>
+      <br>
+      <a class="maps-link" href="https://yandex.com/maps/10738/lubercy/?poi%5Buri%5D=ymapsbm1%3A%2F%2Forg%3Foid%3D221301348632" target="_blank" rel="noopener" style="margin-top:6px">
+        📍 Филиал 2: Весенняя ул., 8, Люберцы — открыть на Яндекс Картах
+      </a>
+
+      <div class="gift-block">
+        <div class="gift-label">Ваш эксклюзивный подарок</div>
+        <h3>15% скидка на первое посещение</h3>
+        <p>
+          Назовите промокод при записи — получите <strong style="color:#fff">скидку 15%</strong>
+          на первый визит. Цены под ключ, без скрытых доплат. Скидка действует на:
+        </p>
+        <ul style="color:#8888b8;font-size:0.93rem;line-height:2;padding-left:20px;margin-bottom:24px">
+          <li>Лечение кариеса</li>
+          <li>Лечение пульпитов</li>
+          <li>Лечение периодонтитов</li>
+          <li>Профессиональная гигиена зубов</li>
+          <li>Отбеливание зубов</li>
+          <li>Реставрация зубов</li>
+        </ul>
+        <div class="promo-box">
+          <span class="promo-label">Ваш промокод:</span>
+          <span class="promo-value" id="promo-fsdental"></span>
+          <button class="promo-copy" onclick="copyPromo('promo-fsdental', this)">Скопировать</button>
+        </div>
+        <p class="promo-hint">📞 Скопируйте или запомните промокод — его нужно назвать менеджеру при звонке или записи</p>
+      </div>
+
+      <div class="reviews-title">
+        Отзывы с Яндекс Карт <span>реальные отзывы</span>
+      </div>
+      <div class="reviews-grid">
+        <img class="review-img" src="reviews/fsdental_1.png" alt="Отзыв о Fs Dental Clinic" />
+        <img class="review-img" src="reviews/fsdental_2.png" alt="Отзыв о Fs Dental Clinic" />
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ МАСТЕР-ДАШБОРД ══════════════ -->
+  <div id="page-admin-master" class="page">
+    <div class="admin-page">
+      <h2>📊 Мастер-дашборд</h2>
+      <p class="admin-sub">Полная статистика по всем партнёрам</p>
+
+      <!-- Общие цифры -->
+      <div class="stat-cards" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom:30px">
+        <div class="stat-card" style="flex-direction:column;text-align:center;gap:8px">
+          <div class="stat-num" id="master-total-visits">0</div>
+          <div style="font-size:0.82rem;color:#8080a8">Всего визитов</div>
+        </div>
+        <div class="stat-card" style="flex-direction:column;text-align:center;gap:8px">
+          <div class="stat-num" style="color:#5eaaff" id="master-total-clicks">0</div>
+          <div style="font-size:0.82rem;color:#8080a8">Всего кликов</div>
+        </div>
+        <div class="stat-card" style="flex-direction:column;text-align:center;gap:8px">
+          <div class="stat-num" style="color:#22c55e" id="master-conversion">0%</div>
+          <div style="font-size:0.82rem;color:#8080a8">Конверсия</div>
+        </div>
+      </div>
+
+      <!-- По каждому партнёру -->
+      <h3 style="color:#c0c0e0;font-size:1.1rem;margin-bottom:16px">Источники (откуда приходят)</h3>
+      <div class="stat-cards" id="master-sources"></div>
+
+      <h3 style="color:#c0c0e0;font-size:1.1rem;margin:30px 0 16px">Кросс-переходы (откуда → куда)</h3>
+      <div id="master-cross-table" style="overflow-x:auto"></div>
+
+      <h3 style="color:#c0c0e0;font-size:1.1rem;margin:30px 0 16px">Ссылки для партнёров</h3>
+      <div class="stat-cards" id="master-links"></div>
+
+      <button class="admin-reset" onclick="resetStats()">Сбросить статистику</button>
+      <p class="admin-note">
+        ⚠️ Статистика хранится локально в браузере — это MVP-версия.
+        Для сквозной аналитики нужен сервер.
+      </p>
+    </div>
+  </div>
+
+  <!-- ══════════════ ПАРТНЁРСКИЙ ДАШБОРД ══════════════ -->
+  <div id="page-admin-partner" class="page">
+    <div class="admin-page">
+      <h2 id="partner-dash-title">📊 Дашборд</h2>
+      <p class="admin-sub" id="partner-dash-sub">Статистика вашей локации</p>
+
+      <div class="stat-cards" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom:30px">
+        <div class="stat-card" style="flex-direction:column;text-align:center;gap:8px">
+          <div class="stat-num" id="partner-total-visits">0</div>
+          <div style="font-size:0.82rem;color:#8080a8">Зашли по вашей ссылке</div>
+        </div>
+        <div class="stat-card" style="flex-direction:column;text-align:center;gap:8px">
+          <div class="stat-num" style="color:#5eaaff" id="partner-total-clicks">0</div>
+          <div style="font-size:0.82rem;color:#8080a8">Всего кликов на партнёров</div>
+        </div>
+      </div>
+
+      <h3 style="color:#c0c0e0;font-size:1.1rem;margin-bottom:16px">Куда кликали ваши клиенты</h3>
+      <div class="stat-cards" id="partner-clicks-detail"></div>
+
+      <h3 style="color:#c0c0e0;font-size:1.1rem;margin:30px 0 16px">Сколько клиентов пришли к вам от других партнёров</h3>
+      <div class="stat-cards" id="partner-incoming-detail"></div>
+
+      <p class="admin-note" style="margin-top:30px">
+        ⚠️ Статистика хранится локально в браузере посетителя — это MVP-версия.
+      </p>
+    </div>
+  </div>
+
+
+  <!-- ══════════════ COOKIE BANNER ══════════════ -->
+  <div id="cookie-banner" class="cookie-banner" style="display:none">
+    <p>Мы используем локальное хранилище браузера для сбора обезличенной статистики переходов. Персональные данные не собираются и не передаются третьим лицам.</p>
+    <button class="cookie-accept" onclick="acceptCookies()">Понятно</button>
+  </div>
+
+  <script>
+    // ── Список партнёров ──
+    const PARTNERS = {
+      smakidze: { name: 'Смакидзе',  promo: 'СМАКИДЗЕ',  emoji: '🍽️' },
+      km:       { name: 'KM Studio', promo: 'KMSTUDIO',  emoji: '💆' },
+      kiber:    { name: 'KiberONE',  promo: 'KIBERONE',  emoji: '👨‍💻' },
+      abrikos:  { name: 'Абрикос',   promo: 'АБРИКОС',   emoji: '🍑' },
+      fsdental: { name: 'Fs Dental Clinic', promo: 'FSDENTAL', emoji: '🦷' }
+    };
+    const P_IDS = Object.keys(PARTNERS);
+
+    // ── URL-параметры ──
+    const params = new URLSearchParams(window.location.search);
+    const urlRef = params.get('ref') || null;
+    const adminParam = params.get('admin') || null;
+
+    // ── Роутинг ──
+    if (adminParam === 'master') {
+      showPage('admin-master');
+      renderMasterDashboard();
+    } else if (adminParam && PARTNERS[adminParam]) {
+      showPage('admin-partner');
+      renderPartnerDashboard(adminParam);
+    } else if (urlRef && PARTNERS[urlRef]) {
+      document.getElementById('page-main').classList.add('active');
+      trackVisit(urlRef);
+      hideSourceCard();
+      setDynamicPromos();
+    } else {
+      document.getElementById('page-error').classList.add('active');
+    }
+
+    // ── Динамический счётчик партнёров ──
+    (function() {
+      const count = P_IDS.length;
+      const words = ['месте', 'местах', 'местах', 'местах', 'местах'];
+      const word = count === 1 ? words[0] : words[Math.min(count - 1, 4)];
+      const heroDesc = document.querySelector('.hero-desc');
+      if (heroDesc) {
+        heroDesc.innerHTML = heroDesc.innerHTML.replace(
+          'в нескольких местах',
+          'сразу в\u00a0' + (count - 1) + '\u00a0' + word
+        );
+      }
+    })();
+
+    // ── Скрыть карточку партнёра-источника ──
+    function hideSourceCard() {
+      if (!urlRef) return;
+      document.querySelectorAll('.partner-card').forEach(card => {
+        if (card.getAttribute('onclick') === "openPartner('" + urlRef + "')") {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // ── Промокод = название источника ──
+    function setDynamicPromos() {
+      if (!urlRef || !PARTNERS[urlRef]) return;
+      document.querySelectorAll('.promo-value').forEach(el => {
+        el.textContent = PARTNERS[urlRef].promo;
+      });
+    }
+
+    // ── NAVIGATION ──
+    function showPage(name) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-' + name).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function openPartner(name) {
+      trackClick(urlRef, name);
+      showPage(name);
+
+      const tagEl = document.getElementById('source-tag-' + name);
+      if (tagEl && urlRef && urlRef !== name && PARTNERS[urlRef]) {
+        tagEl.innerHTML = `<div class="source-tag" style="margin-bottom:20px">
+          ✅ Вы пришли от партнёра <strong>${PARTNERS[urlRef].name}</strong> — промокод активирован
+        </div>`;
+      } else if (tagEl) {
+        tagEl.innerHTML = '';
+      }
+    }
+
+    // ── Экранирование для безопасного вывода в HTML ──
+    function esc(val) {
+      const d = document.createElement('div');
+      d.textContent = String(val);
+      return d.innerHTML;
+    }
+
+    // ── COPY PROMO ──
+    function copyPromo(id, btn) {
+      const text = document.getElementById(id).textContent;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => showCopied(btn)).catch(() => fallbackCopy(text, btn));
+      } else {
+        fallbackCopy(text, btn);
+      }
+    }
+    function fallbackCopy(text, btn) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      showCopied(btn);
+    }
+    function showCopied(btn) {
+      btn.textContent = 'Скопировано ✓';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Скопировать'; btn.classList.remove('copied'); }, 2000);
+    }
+
+    // ── STATS (localStorage) ──
+    // Формат: { smakidze_visits: N, smakidze_to_km: N, smakidze_to_kiber: N, ... }
+    function getStats() {
+      try {
+        const raw = JSON.parse(localStorage.getItem('partner_stats') || '{}');
+        // Валидация: оставляем только числовые значения с допустимыми ключами
+        const safe = {};
+        const keyPattern = /^[a-z]+_(visits|clicks|incoming|to_[a-z]+)$/;
+        for (const [k, v] of Object.entries(raw)) {
+          if (keyPattern.test(k) && typeof v === 'number' && Number.isFinite(v) && v >= 0) {
+            safe[k] = Math.floor(v);
+          }
+        }
+        return safe;
+      } catch (e) {
+        return {};
+      }
+    }
+    function saveStats(s) {
+      localStorage.setItem('partner_stats', JSON.stringify(s));
+    }
+    function trackVisit(ref) {
+      const s = getStats();
+      s[ref + '_visits'] = (s[ref + '_visits'] || 0) + 1;
+      saveStats(s);
+    }
+    function trackClick(from, to) {
+      if (!from || !to) return;
+      const s = getStats();
+      // Общие клики с этого источника
+      s[from + '_clicks'] = (s[from + '_clicks'] || 0) + 1;
+      // Кросс-переход: откуда → куда
+      s[from + '_to_' + to] = (s[from + '_to_' + to] || 0) + 1;
+      // Входящие клики на партнёра
+      s[to + '_incoming'] = (s[to + '_incoming'] || 0) + 1;
+      saveStats(s);
+    }
+    function resetStats() {
+      if (confirm('Сбросить всю статистику?')) {
+        localStorage.removeItem('partner_stats');
+        location.reload();
+      }
+    }
+
+    // ── МАСТЕР-ДАШБОРД ──
+    function renderMasterDashboard() {
+      const s = getStats();
+
+      // Общие цифры
+      let totalVisits = 0, totalClicks = 0;
+      P_IDS.forEach(k => {
+        totalVisits += s[k + '_visits'] || 0;
+        totalClicks += s[k + '_clicks'] || 0;
+      });
+      document.getElementById('master-total-visits').textContent = totalVisits;
+      document.getElementById('master-total-clicks').textContent = totalClicks;
+      document.getElementById('master-conversion').textContent =
+        totalVisits > 0 ? Math.round((totalClicks / totalVisits) * 100) + '%' : '0%';
+
+      // Источники
+      const srcEl = document.getElementById('master-sources');
+      srcEl.innerHTML = P_IDS.map(k => {
+        const v = s[k + '_visits'] || 0;
+        const c = s[k + '_clicks'] || 0;
+        return `<div class="stat-card">
+          <div class="stat-emoji">${PARTNERS[k].emoji}</div>
+          <div class="stat-info">
+            <h4>${PARTNERS[k].name}</h4>
+            <p>Зашли по ссылке: <strong style="color:#c07aff">${esc(v)}</strong> · Кликнули дальше: <strong style="color:#5eaaff">${esc(c)}</strong></p>
+          </div>
+        </div>`;
+      }).join('');
+
+      // Кросс-таблица
+      const tableEl = document.getElementById('master-cross-table');
+      let html = '<table class="cross-table"><tr><th>Откуда ↓ / Куда →</th>';
+      P_IDS.forEach(to => { html += `<th>${PARTNERS[to].emoji} ${PARTNERS[to].name}</th>`; });
+      html += '<th>Итого</th></tr>';
+
+      P_IDS.forEach(from => {
+        html += `<tr><td class="row-header">${PARTNERS[from].emoji} ${PARTNERS[from].name}</td>`;
+        let rowTotal = 0;
+        P_IDS.forEach(to => {
+          if (from === to) {
+            html += '<td class="cell-self">—</td>';
+          } else {
+            const val = s[from + '_to_' + to] || 0;
+            rowTotal += val;
+            html += `<td class="${val > 0 ? 'cell-active' : ''}">${esc(val)}</td>`;
+          }
+        });
+        html += `<td class="cell-active">${esc(rowTotal)}</td></tr>`;
+      });
+      html += '</table>';
+      tableEl.innerHTML = html;
+
+      // Ссылки
+      const linksEl = document.getElementById('master-links');
+      const base = window.location.origin + window.location.pathname;
+      linksEl.innerHTML = P_IDS.map(k => `<div class="stat-card" style="flex-direction:column;gap:8px">
+        <div style="font-size:0.9rem;font-weight:700;color:#c0c0e0">${PARTNERS[k].emoji} ${PARTNERS[k].name}</div>
+        <div style="font-size:0.75rem;color:#6060a0">QR / рассылка:</div>
+        <code style="color:#c07aff;font-size:0.78rem;word-break:break-all">${base}?ref=${k}</code>
+        <div style="font-size:0.75rem;color:#6060a0;margin-top:4px">Дашборд партнёра:</div>
+        <code style="color:#5eaaff;font-size:0.78rem;word-break:break-all">${base}?admin=${k}</code>
+      </div>`).join('');
+    }
+
+    // ── ПАРТНЁРСКИЙ ДАШБОРД ──
+    function renderPartnerDashboard(id) {
+      const s = getStats();
+      const p = PARTNERS[id];
+
+      document.getElementById('partner-dash-title').textContent = p.emoji + ' ' + p.name;
+      document.getElementById('partner-dash-sub').textContent = 'Статистика вашей локации';
+
+      const visits = s[id + '_visits'] || 0;
+      const clicks = s[id + '_clicks'] || 0;
+      document.getElementById('partner-total-visits').textContent = visits;
+      document.getElementById('partner-total-clicks').textContent = clicks;
+
+      // Куда кликали клиенты, пришедшие по ссылке этого партнёра
+      const detailEl = document.getElementById('partner-clicks-detail');
+      detailEl.innerHTML = P_IDS.filter(k => k !== id).map(to => {
+        const val = s[id + '_to_' + to] || 0;
+        return `<div class="stat-card">
+          <div class="stat-emoji">${PARTNERS[to].emoji}</div>
+          <div class="stat-info">
+            <h4>${PARTNERS[to].name}</h4>
+          </div>
+          <div class="stat-nums">
+            <div class="stat-num" style="font-size:1.6rem">${esc(val)}</div>
+            <div class="stat-num-label">кликов</div>
+          </div>
+        </div>`;
+      }).join('');
+
+      // Сколько клиентов от других партнёров кликнули на этого
+      const inEl = document.getElementById('partner-incoming-detail');
+      inEl.innerHTML = P_IDS.filter(k => k !== id).map(from => {
+        const val = s[from + '_to_' + id] || 0;
+        return `<div class="stat-card">
+          <div class="stat-emoji">${PARTNERS[from].emoji}</div>
+          <div class="stat-info">
+            <h4>От ${PARTNERS[from].name}</h4>
+          </div>
+          <div class="stat-nums">
+            <div class="stat-num" style="font-size:1.6rem">${esc(val)}</div>
+            <div class="stat-num-label">переходов</div>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    // ── Показать страницу после инициализации ──
+    document.body.style.opacity = '1';
+
+    // ── COOKIE BANNER ──
+    function acceptCookies() {
+      localStorage.setItem('cookie_accepted', '1');
+      document.getElementById('cookie-banner').style.display = 'none';
+    }
+    if (!localStorage.getItem('cookie_accepted') && !adminParam) {
+      document.getElementById('cookie-banner').style.display = 'flex';
+    }
+  </script>
+
+</body>
+</html>
