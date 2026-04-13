@@ -543,6 +543,42 @@
       transition: all .2s;
     }
     .period-btn:hover { border-color: rgba(130,60,255,0.4); color: #c0c0e0; }
+
+    .rank-bar-wrap {
+      flex: 1;
+      min-width: 0;
+    }
+    .rank-bar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .rank-bar-name {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #c0c0e0;
+    }
+    .rank-bar-value {
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: #c07aff;
+    }
+    .rank-bar-track {
+      height: 8px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+    .rank-bar-fill {
+      height: 100%;
+      border-radius: 100px;
+      background: linear-gradient(90deg, #7b3fff, #2b7fff);
+      transition: width .4s;
+    }
+    .rank-bar-fill.incoming {
+      background: linear-gradient(90deg, #2b7fff, #22c55e);
+    }
     .period-btn.active {
       background: linear-gradient(135deg, #7b3fff, #2b7fff);
       border-color: transparent;
@@ -1005,6 +1041,12 @@
       <h3 style="color:#c0c0e0;font-size:1.1rem;margin-bottom:16px">Источники (откуда приходят)</h3>
       <div class="stat-cards" id="master-sources"></div>
 
+      <h3 style="color:#c0c0e0;font-size:1.1rem;margin:30px 0 16px">Топ по привлечению (от кого больше пришло к другим)</h3>
+      <div id="master-rank-outgoing" class="stat-cards"></div>
+
+      <h3 style="color:#c0c0e0;font-size:1.1rem;margin:30px 0 16px">Топ по входящим (к кому больше пришло от других)</h3>
+      <div id="master-rank-incoming" class="stat-cards"></div>
+
       <h3 style="color:#c0c0e0;font-size:1.1rem;margin:30px 0 16px">Кросс-переходы (откуда → куда)</h3>
       <div id="master-cross-table" style="overflow-x:auto"></div>
 
@@ -1317,6 +1359,44 @@
             <p>Зашли по ссылке: <strong style="color:#c07aff">${esc(v)}</strong> · Кликнули дальше: <strong style="color:#5eaaff">${esc(c)}</strong></p>
           </div>
         </div>`;
+      }).join('');
+
+      // Рейтинг по привлечению (от кого больше кликов ушло)
+      var outgoing = P_IDS.map(function(k) {
+        var total = 0;
+        P_IDS.forEach(function(to) { if (to !== k) total += s[k + '_to_' + to] || 0; });
+        return { id: k, val: total };
+      }).sort(function(a, b) { return b.val - a.val; });
+      var outMax = outgoing.length > 0 ? outgoing[0].val : 1;
+
+      document.getElementById('master-rank-outgoing').innerHTML = outgoing.map(function(item, i) {
+        var pct = outMax > 0 ? Math.round((item.val / outMax) * 100) : 0;
+        return '<div class="stat-card" style="gap:14px">' +
+          '<div style="font-size:1.4rem;font-weight:800;color:' + (i === 0 ? '#c07aff' : '#505080') + '">' + (i + 1) + '</div>' +
+          '<div class="stat-emoji">' + PARTNERS[item.id].emoji + '</div>' +
+          '<div class="rank-bar-wrap">' +
+            '<div class="rank-bar-header"><span class="rank-bar-name">' + PARTNERS[item.id].name + '</span><span class="rank-bar-value">' + esc(item.val) + ' переходов</span></div>' +
+            '<div class="rank-bar-track"><div class="rank-bar-fill" style="width:' + pct + '%"></div></div>' +
+          '</div></div>';
+      }).join('');
+
+      // Рейтинг по входящим (к кому больше кликов пришло)
+      var incoming = P_IDS.map(function(k) {
+        var total = 0;
+        P_IDS.forEach(function(from) { if (from !== k) total += s[from + '_to_' + k] || 0; });
+        return { id: k, val: total };
+      }).sort(function(a, b) { return b.val - a.val; });
+      var inMax = incoming.length > 0 ? incoming[0].val : 1;
+
+      document.getElementById('master-rank-incoming').innerHTML = incoming.map(function(item, i) {
+        var pct = inMax > 0 ? Math.round((item.val / inMax) * 100) : 0;
+        return '<div class="stat-card" style="gap:14px">' +
+          '<div style="font-size:1.4rem;font-weight:800;color:' + (i === 0 ? '#22c55e' : '#505080') + '">' + (i + 1) + '</div>' +
+          '<div class="stat-emoji">' + PARTNERS[item.id].emoji + '</div>' +
+          '<div class="rank-bar-wrap">' +
+            '<div class="rank-bar-header"><span class="rank-bar-name">' + PARTNERS[item.id].name + '</span><span class="rank-bar-value">' + esc(item.val) + ' переходов</span></div>' +
+            '<div class="rank-bar-track"><div class="rank-bar-fill incoming" style="width:' + pct + '%"></div></div>' +
+          '</div></div>';
       }).join('');
 
       // Кросс-таблица
