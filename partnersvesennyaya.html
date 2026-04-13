@@ -528,6 +528,30 @@
     }
     .admin-reset:hover { background: rgba(255,60,60,0.2); }
 
+    .period-filter {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .period-btn {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: #8080a8;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: 100px;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .period-btn:hover { border-color: rgba(130,60,255,0.4); color: #c0c0e0; }
+    .period-btn.active {
+      background: linear-gradient(135deg, #7b3fff, #2b7fff);
+      border-color: transparent;
+      color: #fff;
+    }
+
     .admin-note {
       margin-top: 20px;
       font-size: 0.78rem;
@@ -958,6 +982,12 @@
       <h2>📊 Мастер-дашборд</h2>
       <p class="admin-sub">Полная статистика по всем партнёрам</p>
 
+      <div class="period-filter" id="master-period-filter">
+        <button class="period-btn" onclick="setMasterPeriod(7, this)">Неделя</button>
+        <button class="period-btn" onclick="setMasterPeriod(30, this)">Месяц</button>
+        <button class="period-btn active" onclick="setMasterPeriod(0, this)">Всё время</button>
+      </div>
+
       <!-- Общие цифры -->
       <div class="stat-cards" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom:30px">
         <div class="stat-card" style="flex-direction:column;text-align:center;gap:8px">
@@ -984,10 +1014,8 @@
       <h3 style="color:#c0c0e0;font-size:1.1rem;margin:30px 0 16px">Ссылки для партнёров</h3>
       <div class="stat-cards" id="master-links"></div>
 
-      <button class="admin-reset" onclick="resetStats()">Сбросить статистику</button>
       <p class="admin-note">
-        ⚠️ Статистика хранится локально в браузере — это MVP-версия.
-        Для сквозной аналитики нужен сервер.
+        Данные обновляются при загрузке страницы. Обновите страницу для актуальных данных.
       </p>
     </div>
   </div>
@@ -997,6 +1025,12 @@
     <div class="admin-page">
       <h2 id="partner-dash-title">📊 Дашборд</h2>
       <p class="admin-sub" id="partner-dash-sub">Статистика вашей локации</p>
+
+      <div class="period-filter" id="partner-period-filter">
+        <button class="period-btn" onclick="setPartnerPeriod(7, this)">Неделя</button>
+        <button class="period-btn" onclick="setPartnerPeriod(30, this)">Месяц</button>
+        <button class="period-btn active" onclick="setPartnerPeriod(0, this)">Всё время</button>
+      </div>
 
       <div class="stat-cards" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom:30px">
         <div class="stat-card" style="flex-direction:column;text-align:center;gap:8px">
@@ -1016,7 +1050,7 @@
       <div class="stat-cards" id="partner-incoming-detail"></div>
 
       <p class="admin-note" style="margin-top:30px">
-        ⚠️ Статистика хранится локально в браузере посетителя — это MVP-версия.
+        Данные обновляются при загрузке страницы. Обновите страницу для актуальных данных.
       </p>
     </div>
   </div>
@@ -1197,32 +1231,60 @@
     }
 
     // Загрузка статистики из Google Sheets для дашбордов
-    function loadStats(partner) {
-      var url = SHEET_URL + (partner ? '?partner=' + partner : '');
-      return fetch(url)
+    var cachedRows = null;
+
+    function loadRows() {
+      if (cachedRows) return Promise.resolve(cachedRows);
+      return fetch(SHEET_URL)
         .then(function(r) { return r.json(); })
-        .then(function(rows) {
-          var stats = {};
-          rows.forEach(function(row) {
-            if (row.event === 'visit' && row.ref) {
-              stats[row.ref + '_visits'] = (stats[row.ref + '_visits'] || 0) + 1;
-            }
-            if (row.event === 'click' && row.ref && row.to) {
-              stats[row.ref + '_clicks'] = (stats[row.ref + '_clicks'] || 0) + 1;
-              stats[row.ref + '_to_' + row.to] = (stats[row.ref + '_to_' + row.to] || 0) + 1;
-              stats[row.to + '_incoming'] = (stats[row.to + '_incoming'] || 0) + 1;
-            }
-          });
-          return stats;
-        })
-        .catch(function() { return {}; });
+        .then(function(rows) { cachedRows = rows; return rows; })
+        .catch(function() { return []; });
+    }
+
+    function rowsToStats(rows, days) {
+      var cutoff = null;
+      if (days > 0) {
+        cutoff = new Date();
+        cutoff.setDate(cutoff.getDate() - days);
+      }
+      var stats = {};
+      rows.forEach(function(row) {
+        if (cutoff && new Date(row.date) < cutoff) return;
+        if (row.event === 'visit' && row.ref) {
+          stats[row.ref + '_visits'] = (stats[row.ref + '_visits'] || 0) + 1;
+        }
+        if (row.event === 'click' && row.ref && row.to) {
+          stats[row.ref + '_clicks'] = (stats[row.ref + '_clicks'] || 0) + 1;
+          stats[row.ref + '_to_' + row.to] = (stats[row.ref + '_to_' + row.to] || 0) + 1;
+          stats[row.to + '_incoming'] = (stats[row.to + '_incoming'] || 0) + 1;
+        }
+      });
+      return stats;
+    }
+
+    // Период для дашбордов
+    var masterDays = 0;
+    var partnerDays = 0;
+
+    function setMasterPeriod(days, btn) {
+      masterDays = days;
+      btn.parentElement.querySelectorAll('.period-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      loadRows().then(function(rows) { renderMasterData(rowsToStats(rows, days)); });
+    }
+
+    function setPartnerPeriod(days, btn) {
+      partnerDays = days;
+      btn.parentElement.querySelectorAll('.period-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      loadRows().then(function(rows) { renderPartnerData(adminParam, rowsToStats(rows, days)); });
     }
 
     // ── МАСТЕР-ДАШБОРД ──
     function renderMasterDashboard() {
       document.getElementById('master-total-visits').textContent = '...';
       document.getElementById('master-total-clicks').textContent = '...';
-      loadStats(null).then(function(s) { renderMasterData(s); });
+      loadRows().then(function(rows) { renderMasterData(rowsToStats(rows, masterDays)); });
     }
     function renderMasterData(s) {
 
@@ -1293,7 +1355,7 @@
       const p = PARTNERS[id];
       document.getElementById('partner-dash-title').textContent = p.emoji + ' ' + p.name;
       document.getElementById('partner-dash-sub').textContent = 'Загрузка данных...';
-      loadStats(id).then(function(s) { renderPartnerData(id, s); });
+      loadRows().then(function(rows) { renderPartnerData(id, rowsToStats(rows, partnerDays)); });
     }
     function renderPartnerData(id, s) {
       const p = PARTNERS[id];
