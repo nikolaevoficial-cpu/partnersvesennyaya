@@ -10,7 +10,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="ru_RU" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎁</text></svg>" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline'; img-src 'self' data: mc.yandex.ru; script-src 'self' 'unsafe-inline' mc.yandex.ru mc.yandex.com; connect-src mc.yandex.ru mc.yandex.com" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline'; img-src 'self' data: mc.yandex.ru; script-src 'self' 'unsafe-inline' mc.yandex.ru mc.yandex.com; connect-src mc.yandex.ru mc.yandex.com script.google.com script.googleusercontent.com" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -1173,53 +1173,58 @@
       setTimeout(() => { btn.textContent = 'Скопировать'; btn.classList.remove('copied'); }, 2000);
     }
 
-    // ── STATS (localStorage) ──
-    // Формат: { smakidze_visits: N, smakidze_to_km: N, smakidze_to_kiber: N, ... }
-    function getStats() {
-      try {
-        const raw = JSON.parse(localStorage.getItem('partner_stats') || '{}');
-        // Валидация: оставляем только числовые значения с допустимыми ключами
-        const safe = {};
-        const keyPattern = /^[a-z]+_(visits|clicks|incoming|to_[a-z]+)$/;
-        for (const [k, v] of Object.entries(raw)) {
-          if (keyPattern.test(k) && typeof v === 'number' && Number.isFinite(v) && v >= 0) {
-            safe[k] = Math.floor(v);
-          }
-        }
-        return safe;
-      } catch (e) {
-        return {};
-      }
+    // ── STATS (Google Sheets) ──
+    const SHEET_URL = 'https://script.google.com/macros/s/AKfycbw1ZCAJAcbGZ-LDDMzM8LydnnpuA-9hLD2jOjMW7DvuOyLkyTUu_doD-Ly4FyPsB9djGw/exec';
+
+    function sendEvent(event, ref, to) {
+      fetch(SHEET_URL, {
+        method: 'POST',
+        body: JSON.stringify({
+          event: event,
+          ref: ref || '',
+          to: to || '',
+          ua: navigator.userAgent.substring(0, 100)
+        })
+      }).catch(function() {});
     }
-    function saveStats(s) {
-      localStorage.setItem('partner_stats', JSON.stringify(s));
-    }
+
     function trackVisit(ref) {
-      const s = getStats();
-      s[ref + '_visits'] = (s[ref + '_visits'] || 0) + 1;
-      saveStats(s);
+      sendEvent('visit', ref, '');
     }
     function trackClick(from, to) {
       if (!from || !to) return;
-      const s = getStats();
-      // Общие клики с этого источника
-      s[from + '_clicks'] = (s[from + '_clicks'] || 0) + 1;
-      // Кросс-переход: откуда → куда
-      s[from + '_to_' + to] = (s[from + '_to_' + to] || 0) + 1;
-      // Входящие клики на партнёра
-      s[to + '_incoming'] = (s[to + '_incoming'] || 0) + 1;
-      saveStats(s);
+      sendEvent('click', from, to);
     }
-    function resetStats() {
-      if (confirm('Сбросить всю статистику?')) {
-        localStorage.removeItem('partner_stats');
-        location.reload();
-      }
+
+    // Загрузка статистики из Google Sheets для дашбордов
+    function loadStats(partner) {
+      var url = SHEET_URL + (partner ? '?partner=' + partner : '');
+      return fetch(url)
+        .then(function(r) { return r.json(); })
+        .then(function(rows) {
+          var stats = {};
+          rows.forEach(function(row) {
+            if (row.event === 'visit' && row.ref) {
+              stats[row.ref + '_visits'] = (stats[row.ref + '_visits'] || 0) + 1;
+            }
+            if (row.event === 'click' && row.ref && row.to) {
+              stats[row.ref + '_clicks'] = (stats[row.ref + '_clicks'] || 0) + 1;
+              stats[row.ref + '_to_' + row.to] = (stats[row.ref + '_to_' + row.to] || 0) + 1;
+              stats[row.to + '_incoming'] = (stats[row.to + '_incoming'] || 0) + 1;
+            }
+          });
+          return stats;
+        })
+        .catch(function() { return {}; });
     }
 
     // ── МАСТЕР-ДАШБОРД ──
     function renderMasterDashboard() {
-      const s = getStats();
+      document.getElementById('master-total-visits').textContent = '...';
+      document.getElementById('master-total-clicks').textContent = '...';
+      loadStats(null).then(function(s) { renderMasterData(s); });
+    }
+    function renderMasterData(s) {
 
       // Общие цифры
       let totalVisits = 0, totalClicks = 0;
@@ -1283,10 +1288,15 @@
 
     // ── ПАРТНЁРСКИЙ ДАШБОРД ──
     function renderPartnerDashboard(id) {
-      const s = getStats();
+      document.getElementById('partner-total-visits').textContent = '...';
+      document.getElementById('partner-total-clicks').textContent = '...';
       const p = PARTNERS[id];
-
       document.getElementById('partner-dash-title').textContent = p.emoji + ' ' + p.name;
+      document.getElementById('partner-dash-sub').textContent = 'Загрузка данных...';
+      loadStats(id).then(function(s) { renderPartnerData(id, s); });
+    }
+    function renderPartnerData(id, s) {
+      const p = PARTNERS[id];
       document.getElementById('partner-dash-sub').textContent = 'Статистика вашей локации';
 
       const visits = s[id + '_visits'] || 0;
