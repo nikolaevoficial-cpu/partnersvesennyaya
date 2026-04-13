@@ -1233,16 +1233,18 @@
 
     function loadRows() {
       if (cachedRows) return Promise.resolve(cachedRows);
-      return fetch(SHEET_URL, { redirect: 'follow' })
-        .then(function(r) {
-          if (!r.ok) return [];
-          return r.json();
-        })
-        .then(function(rows) {
-          if (Array.isArray(rows)) { cachedRows = rows; return rows; }
-          return [];
-        })
-        .catch(function() { return []; });
+      return new Promise(function(resolve) {
+        var cbName = '_cb' + Math.random().toString(36).substr(2, 8);
+        window[cbName] = function(data) {
+          delete window[cbName];
+          if (Array.isArray(data)) { cachedRows = data; resolve(data); }
+          else resolve([]);
+        };
+        var script = document.createElement('script');
+        script.src = SHEET_URL + '?callback=' + cbName;
+        script.onerror = function() { delete window[cbName]; resolve([]); };
+        document.body.appendChild(script);
+      });
     }
 
     function rowsToStats(rows, days) {
