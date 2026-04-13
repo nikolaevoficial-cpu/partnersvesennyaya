@@ -10,7 +10,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="ru_RU" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎁</text></svg>" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline'; img-src 'self' data:; script-src 'self' 'unsafe-inline'" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline'; img-src 'self' data: mc.yandex.ru; script-src 'self' 'unsafe-inline' mc.yandex.ru mc.yandex.com; connect-src mc.yandex.ru mc.yandex.com" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -1022,6 +1022,26 @@
   </div>
 
 
+  <!-- ══════════════ ЯНДЕКС.МЕТРИКА ══════════════ -->
+  <script type="text/javascript">
+    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();
+    for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return;}}
+    k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+    (window,document,"script","https://mc.yandex.ru/metrika/tag.js","ym");
+
+    ym(108526089, "init", {
+      clickmap: true,
+      trackLinks: true,
+      accurateTrackBounce: true,
+      webvisor: true,
+      params: {
+        ref: new URLSearchParams(window.location.search).get('ref') || 'direct'
+      }
+    });
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/108526089" style="position:absolute;left:-9999px" alt="" /></div></noscript>
+
   <!-- ══════════════ COOKIE BANNER ══════════════ -->
   <div id="cookie-banner" class="cookie-banner" style="display:none">
     <p>Мы используем локальное хранилище браузера для сбора обезличенной статистики переходов. Персональные данные не собираются и не передаются третьим лицам.</p>
@@ -1101,6 +1121,10 @@
 
     function openPartner(name) {
       trackClick(urlRef, name);
+      // Яндекс.Метрика — цель: клик на партнёра
+      if (typeof ym === 'function') {
+        ym(108526089, 'reachGoal', 'click_partner', { from: urlRef, to: name });
+      }
       showPage(name);
 
       const tagEl = document.getElementById('source-tag-' + name);
@@ -1141,6 +1165,9 @@
       showCopied(btn);
     }
     function showCopied(btn) {
+      if (typeof ym === 'function') {
+        ym(108526089, 'reachGoal', 'copy_promo', { ref: urlRef });
+      }
       btn.textContent = 'Скопировано ✓';
       btn.classList.add('copied');
       setTimeout(() => { btn.textContent = 'Скопировать'; btn.classList.remove('copied'); }, 2000);
