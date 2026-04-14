@@ -772,6 +772,15 @@
           <button class="card-btn">Смотреть подарок →</button>
         </div>
 
+        <div class="partner-card" onclick="openPartner('yoga')">
+          <span class="partner-emoji">🧘</span>
+          <div class="partner-type">Студия йоги</div>
+          <h3>WOW Yoga</h3>
+          <p>Студия йоги в Люберцах — групповые занятия, мастер-классы, личная практика.</p>
+          <div class="gift-preview">🎁 3 000 ₽ бонусами на занятия</div>
+          <button class="card-btn">Смотреть подарок →</button>
+        </div>
+
       </div>
     </section>
 
@@ -1017,6 +1026,51 @@
     </div>
   </div>
 
+  <!-- ══════════════ WOW YOGA ══════════════ -->
+  <div id="page-yoga" class="page">
+    <div class="detail-page">
+      <button class="back-btn" onclick="showPage('main')">← Назад ко всем партнёрам</button>
+
+      <div id="source-tag-yoga"></div>
+
+      <div class="detail-header">
+        <span class="detail-emoji">🧘</span>
+        <h2>WOW Yoga</h2>
+      </div>
+      <div class="detail-type">Студия йоги</div>
+      <a class="maps-link" href="https://yandex.kz/maps/-/CPvyEY20" target="_blank" rel="noopener">
+        📍 Люберцы — открыть на Яндекс Картах
+      </a>
+
+      <div class="gift-block">
+        <div class="gift-label">Ваш эксклюзивный подарок</div>
+        <h3>3 000 ₽ бонусами на занятия йогой</h3>
+        <p>
+          Назовите промокод при записи — получите <strong style="color:#fff">3 000 ₽ бонусами</strong>
+          на занятия. Бонусы можно использовать для оплаты абонементов и мастер-классов.
+        </p>
+        <ul style="color:#8888b8;font-size:0.93rem;line-height:2;padding-left:20px;margin-bottom:24px">
+          <li>Списание до <strong style="color:#fff">30% от стоимости</strong> абонемента или мастер-класса</li>
+          <li>Срок действия бонусов — <strong style="color:#fff">30 дней</strong> с момента начисления</li>
+        </ul>
+        <div class="promo-box">
+          <span class="promo-label">Ваш промокод:</span>
+          <span class="promo-value" id="promo-yoga"></span>
+          <button class="promo-copy" onclick="copyPromo('promo-yoga', this)">Скопировать</button>
+        </div>
+        <p class="promo-hint">📞 Скопируйте или запомните промокод — его нужно назвать менеджеру при звонке или записи</p>
+      </div>
+
+      <div class="reviews-title">
+        Отзывы с Яндекс Карт <span>реальные отзывы</span>
+      </div>
+      <div class="reviews-grid">
+        <img class="review-img" src="reviews/yoga_1.png" alt="Отзыв о WOW Yoga" />
+        <img class="review-img" src="reviews/yoga_2.png" alt="Отзыв о WOW Yoga" />
+      </div>
+    </div>
+  </div>
+
   <!-- ══════════════ МАСТЕР-ДАШБОРД ══════════════ -->
   <div id="page-admin-master" class="page">
     <div class="admin-page">
@@ -1136,7 +1190,8 @@
       km:       { name: 'KM Studio', promo: 'KMSTUDIO',  emoji: '💆' },
       kiber:    { name: 'KiberONE',  promo: 'KIBERONE',  emoji: '👨‍💻' },
       abrikos:  { name: 'Абрикос',   promo: 'АБРИКОС',   emoji: '🍑' },
-      fsdental: { name: 'Fs Dental Clinic', promo: 'FSDENTAL', emoji: '🦷' }
+      fsdental: { name: 'Fs Dental Clinic', promo: 'FSDENTAL', emoji: '🦷' },
+      yoga:     { name: 'WOW Yoga',         promo: 'WOWYOGA',  emoji: '🧘' }
     };
     const P_IDS = Object.keys(PARTNERS);
     const SHEET_URL = 'https://script.google.com/macros/s/AKfycbw1ZCAJAcbGZ-LDDMzM8LydnnpuA-9hLD2jOjMW7DvuOyLkyTUu_doD-Ly4FyPsB9djGw/exec';
